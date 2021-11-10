@@ -28,10 +28,10 @@ The Diagrams I used for making this Project:
 ## Other Rubric Criteria
 These are some solutions to other criteria on the rubric that needed to be met:
 ### Test Smart Contract
-![tested smart contract](/UML/Test_Successful.JPG)
+![tested smart contract](/UML/Test_Successful.png)
 
-###Modify Front End To Interact With Smart Contract
-![working front end](/UML/Working_Website.JPG)
+### Modify Front End To Interact With Smart Contract
+![working front end](/UML/Working_Website.png)
 
 ### TX Hash and Contract Address For Deployed Rinkeby DAPP:
 transaction hash:    0xbe5d0e3c2cf76cdd2b0e12c8c84473b2646fc19fb354a7351e67a767c0505321
