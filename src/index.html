@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Chain Part DApp</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/src/style.css">
+</head>
+
+<body>
+    <div id="ftc-partProduction">
+        <h2>Steel Batch Overview</h2>
+        <div class="form-group">
+            Steel Batch ID
+            <br>
+            <input class="input-field" type="number" id="steelBatchID" name="steelBatchID" value=1><br>
+            <div class=button-div>
+                <button class="btn-fetchSteelBatch" id="button" type="button" data-id="6">Fetch Steel Batch Data</button>
+            </div>
+        </div>
+        <h2>Part Overview</h2>
+        <div class="form-group">
+            upc
+            <br>
+            <input class="input-field" type="number" id="upc" name="upc" value=1><br>
+            <div class=button-div>
+                <button class="btn-fetchPartOne" id="button" type="button" data-id="14">Fetch Part Data 1</button>
+                <button class="btn-fetchPartTwo" id="button" type="button" data-id="15">Fetch Part Data 2</button>
+            </div>
+        </div>
+        <div class=form-break></div>
+        <h2>Steel Mill Details</h2>
+        <div class="form-group">
+            Steel Mill
+            <br>
+            <input type="text" id="steelMill" name="steelMill" value="Paul's Steel Mill"><br>
+            Steel Mill Information
+            <br>
+            <input type="text" id="steelMillInformation" name="steelMillInformation" value="Downtown Pittsburgh"><br>
+            Steel Mill Latitude
+            <br>
+            <input type="text" id="steelMillLatitude" name="steelMillLatitude" value="40.4406"><br>
+            Steel Mill Longitude
+            <br>
+            <input type="text" id="steelMillLongitude" name="steelMillLongitude" value="79.9959"><br>
+            <br>
+            Steel Mill Notes
+            <br>
+            <input type="text" id="steelMillNotes" name="steelMillNotes" value="3rd batch of steel"><br>
+            <br>
+            Steel Batch Price
+            <br>
+            <input type="number" id="steelPrice" name="steelPrice" value=1>ETH<br>
+            <button class="btn-castSteel" id="button" type="button" data-id="1">Cast Steel</button>
+            <button class="btn-sellSteelBatch" id="button" type="button" data-id="2">Sell Steel Batch</button>
+            <button class="btn-buySteelBatch" id="button" type="button" data-id="3">Buy Steel Batch</button>
+            <button class="btn-shipSteelBatch" id="button" type="button" data-id="4">Ship Steel Batch</button>+
+            <button class="btn-receiveSteelBatch" id="button" type="button" data-id="5">Receive Steel Batch</button>
+        </div>
+        <div class=form-break></div>
+        <h2>Part Product Details</h2>
+        <div class="form-group">
+            Producer Name
+            <br>
+            <input type="text" id="producerName" name="producerName" value="Paul's Part Shop"><br>
+            Producer Information
+            <br>
+            <input type="text" id="producerInformation" name="producerInformation" value="Downtown Pittsburgh"><br>
+            Producer Latitude
+            <br>
+            <input type="text" id="producerLatitude" name="producerLatitude" value="40.4406"><br>
+            Producer Longitude
+            <br>
+            <input type="text" id="producerLongitude" name="producerLongitude" value="79.9959"><br>
+            Part Product Notes
+            <br>
+            <input type="text" id="partNotes" name="partNotes" value="Milled 4 inch steel" size="60"><br>
+            Part Product Price
+            <br>
+            <input type="number" id="partPrice" name="partPrice" value=1>ETH<br>
+            <button class="btn-producePart" id="button" type="button" data-id="7">Produce Part</button>
+            <button class="btn-packPart" id="button" type="button" data-id="8">Pack Part</button>
+            <button class="btn-sellPart" id="button" type="button" data-id="9">Sell Part</button>
+            <button class="btn-buyPart" id="button" type="button" data-id="10">Buy Part</button>
+            <button class="btn-shipPart" id="button" type="button" data-id="11">Ship Part</button>
+            <button class="btn-receivePart" id="button" type="button" data-id="12">Receive Part</button>
+            <button class="btn-purchasePart" id="button" type="button" data-id="13">Purchase Part</button>
+        </div>
+        <div class=form-break></div>
+        <hr>
+    </div>
+
+    <h2>Transaction History<span id="ftc-history"></span></h2>
+    <div>
+        <ul id="ftc-events">
+            <!-- Events will appear here from app.js -->
+        </ul>
+        <br>
+        <hr>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
