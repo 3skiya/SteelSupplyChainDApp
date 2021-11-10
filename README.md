@@ -16,13 +16,13 @@ The Diagrams I used for making this Project:
 ![Activity Diagram](/UML/Activity_Diagram.png)
 
 ### Class Diagram
-![Class Diagram](/UML/Class Diagram.png)
+![Class Diagram](/UML/Class_Diagram.png)
 
 ### Sequence Diagram
 ![Sequence Diagram](/UML/Sequence_Diagram.png)
 
 ### State Diagram
-![State Diagram](/UML/State Diagram.png)
+![State Diagram](/UML/State_Diagram.png)
 
 
 ## Other Rubric Criteria
