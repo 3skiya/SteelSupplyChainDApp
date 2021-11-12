@@ -146,7 +146,7 @@ contract SupplyChain is
 
     //define a modifier to check if steelBatch exists
     modifier steelBatchAlreadyExists(uint _steelBatchID) {
-        SteelBatch memory _steel = steel[steelBatchID];
+        SteelBatch storage _steel = steel[steelBatchID];
         require(!_steel.exist, "This Steel Batch ID already exists.");
         _;
     }
@@ -183,21 +183,10 @@ contract SupplyChain is
 
     //define a modifier that checks if a part already exists
     modifier partAlreadyExists(uint _upc) {
-        Part memory _part = items[_upc];
+        Part storage _part = items[_upc];
         require(!_part.exist, "Part upc already exists.");
         _;
     }
-
-    //Couldn't get this to work so commeted it out
-    //define a modifier that checks if a producer has and owns the steel needed for a part
-    /*modifier partProducerHasAndOwnsSteel(uint _steelID) {
-        for (uint i=0; i<bytes(_steelID).length; i++) {
-            uint _steelBatchID = _steelID[i];
-            require(steel[_steelBatchID].ownerID == msg.sender, "Producer does not own the steel for making this part.");
-            require(steel[_steelBatchID].steelState == SteelState.Received, "Producer has not received all the steel needed for this part.");
-        }
-        _;
-    }*/
 
     //define a modifier that checks if part is Produced
     modifier partProduced(uint _upc) {
@@ -265,7 +254,7 @@ contract SupplyChain is
 
     //Define function 'castSteel' that allows a steelMaker to mark steel as Casted
     function castSteel(uint _steelBatchID, string memory _steelMill, string memory _steelMillInformation, string memory _steelMillLatitude, string memory _steelMillLongitude, string memory _steelMillNotes)
-    public {
+    public onlySteelMaker{
         //add new steelBatch
         steel[_steelBatchID] = SteelBatch({
             steelBatchID: steelBatchID,
@@ -290,7 +279,7 @@ contract SupplyChain is
 
     //Define a function 'sellSteelBatch()' that allows a steelMaker list steel for sale
     function sellSteelBatch(uint _steelBatchID, uint _steelPrice)
-    public steelBatchCasted(_steelBatchID) verifyCaller(steel[_steelBatchID].ownerID) {
+    public onlySteelMaker steelBatchCasted(_steelBatchID) verifyCaller(steel[_steelBatchID].ownerID) {
         //storing steel *saves me a lot of repeated writing*
         SteelBatch storage steels = steel[_steelBatchID];
         //update steel to 'ForSale'
@@ -303,7 +292,7 @@ contract SupplyChain is
 
     //define a function 'buySteelBatch' that allows a PartProducer to buy steel
     function buySteelBatch(uint _steelBatchID)
-    public payable steelBatchForSale(_steelBatchID) paidEnough(steel[_steelBatchID].steelPrice) checkSteelValue(_steelBatchID) {
+    public payable onlyPartProducer steelBatchForSale(_steelBatchID) paidEnough(steel[_steelBatchID].steelPrice) checkSteelValue(_steelBatchID) {
         //storing steel *saves me a lot of repeated writing*
         SteelBatch storage steels = steel[_steelBatchID];
         //update steel to 'Sold'
@@ -319,7 +308,7 @@ contract SupplyChain is
 
     //Define a function 'shipSteelBatch' that allows a steelMaker to mark steel as Shipped
     function shipSteelBatch(uint _steelBatchID)
-    public steelBatchSold(_steelBatchID) verifyCaller(steel[_steelBatchID].steelMakerID) {
+    public onlySteelMaker steelBatchSold(_steelBatchID) verifyCaller(steel[_steelBatchID].steelMakerID) {
         //storing steel *saves me a lot of repeated writing*
         SteelBatch storage steels = steel[_steelBatchID];
         //update steel to 'Shipped'
@@ -330,7 +319,7 @@ contract SupplyChain is
 
     //Define a function 'receiveSteelBatch' that allows a partProducer to mark steel as Received
     function receiveSteelBatch(uint _steelBatchID)
-    public steelBatchShipped(_steelBatchID) verifyCaller(steel[_steelBatchID].ownerID) {
+    public onlyPartProducer steelBatchShipped(_steelBatchID) verifyCaller(steel[_steelBatchID].ownerID) {
         //storing steel *saves me a lot of repeated writing*
         SteelBatch storage steels = steel[_steelBatchID];
         //update steel to 'Received'
@@ -372,7 +361,7 @@ contract SupplyChain is
 
     //Define a function 'producePart' that allows PartProducer to create a part
     function producePart(uint _upc, string memory _producerName, string memory _producerInformation, string memory _producerLatitude, string memory _producerLongitude, string memory _partNotes)
-    public {
+    public onlyPartProducer {
         //create partID
         uint _partID = sku + _upc;
         //create part
@@ -403,7 +392,7 @@ contract SupplyChain is
 
     //Define a function 'packPart' that allows a PartProducer to mark a part as 'Packed'
     function packPart(uint _upc)
-    public partProduced(_upc) verifyCaller(items[_upc].ownerID) {
+    public onlyPartProducer partProduced(_upc) verifyCaller(items[_upc].ownerID) {
         //store part to save repeated writing
         Part storage part = items[_upc];
         //update partState
@@ -414,7 +403,7 @@ contract SupplyChain is
 
     //Define a function 'sellPart' that allows a PartProducer to mark a part 'ForSale'
     function sellPart(uint _upc, uint _partPrice)
-    public partPacked(_upc) verifyCaller(items[_upc].ownerID) {
+    public onlyPartProducer partPacked(_upc) verifyCaller(items[_upc].ownerID) {
         //store part to save repeated writing
         Part storage part = items[_upc];
         //update partState
@@ -426,7 +415,7 @@ contract SupplyChain is
 
     //Define a function 'buyPart' that allows a Distributor to buy a part
     function buyPart(uint _upc)
-    public payable partForSale(_upc) paidEnough(items[_upc].partPrice) checkValue(_upc) {
+    public payable onlyDistributor partForSale(_upc) paidEnough(items[_upc].partPrice) checkValue(_upc) {
         //store part to save repeated writing
         Part storage part = items[_upc];
         //update DistributorID
@@ -443,7 +432,7 @@ contract SupplyChain is
 
     //define a function 'shipPart' that allows a PartProducer to mark a part as shipped
     function shipPart(uint _upc)
-    public partSold(_upc) verifyCaller(items[_upc].partProducerID) {
+    public onlyPartProducer partSold(_upc) verifyCaller(items[_upc].partProducerID) {
         //store part to save repeated writing
         Part storage part = items[_upc];
         //update partState
@@ -454,7 +443,7 @@ contract SupplyChain is
 
     //Define a function 'recievePart' that allows a retailer to mark a part as received and set a retail Price
     function receivePart(uint _upc, uint _partRetailPrice)
-    public partShipped(_upc) {
+    public onlyRetailer partShipped(_upc) {
         //store part to save repeated writing
         Part storage part = items[_upc];
         //update partState
@@ -470,7 +459,7 @@ contract SupplyChain is
 
     //Define a function 'purchasePart' that allows a consumer to purchase a part
     function purchasePart(uint _upc)
-    public payable partReceived(_upc) paidEnough(items[_upc].partPrice) checkValue(_upc){
+    public payable onlyConsumer partReceived(_upc) paidEnough(items[_upc].partPrice) checkValue(_upc){
         //store part to save repeated writing
         Part storage part = items[_upc];
         //update partState
